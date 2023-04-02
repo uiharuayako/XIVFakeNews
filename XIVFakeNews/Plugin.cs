@@ -38,7 +38,7 @@ namespace XIVFakeNews
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "A useful message to display in /xlhelp"
+                HelpMessage = "/fakenews"
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
@@ -66,7 +66,7 @@ namespace XIVFakeNews
 
         private void DrawUI()
         {
-            this.WindowSystem.Draw();
+            WindowSystem.Draw();
         }
 
         public void DrawConfigUI()
