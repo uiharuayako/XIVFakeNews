@@ -4,7 +4,6 @@ using Dalamud.Game.Text;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
-using ImGuiScene;
 
 namespace XIVFakeNews.Windows;
 
@@ -16,7 +15,7 @@ public class MainWindow : Window, IDisposable
     public MainWindow(Plugin plugin) : base(
         "Fake News!", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
-        this.SizeConstraints = new WindowSizeConstraints
+        SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(375, 180),
             MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
@@ -36,35 +35,33 @@ public class MainWindow : Window, IDisposable
         {
             foreach (XivChatType type in Enum.GetValues(typeof(XivChatType)))
             {
-
-                bool isSelected = configuration.CurrentType==type;
-                if (ImGui.Selectable(type.ToString(),ref isSelected))
+                if (ImGui.Selectable(type.ToString()))
                 {
                     configuration.CurrentType = type;
                     configuration.Save();
                 }
             }
-
             ImGui.EndCombo();
         }
 
-        string name = configuration.Name;
-        if (ImGui.InputText("发送者", ref name, 500))
+        if (ImGui.InputText("发送者", ref configuration.Name, 500))
         {
-            configuration.Name = name;
             configuration.Save();
         }
 
-        string message = configuration.Message;
-        if (ImGui.InputText("消息内容", ref message, 500))
+        if (ImGui.InputText("服务器", ref configuration.Server, 500))
         {
-            configuration.Message = message;
+            configuration.Save();
+        }
+
+        if (ImGui.InputText("消息内容", ref configuration.Message, 500))
+        {
             configuration.Save();
         }
 
         if (ImGui.Button("发送"))
         {
-            plugin.SendMessage(configuration.CurrentType, configuration.Name, configuration.Message);
+            Plugin.SendMessage(configuration.CurrentType, configuration.Name, configuration.Server, configuration.Message);
         }
 
         ImGui.Spacing();
