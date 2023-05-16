@@ -38,7 +38,7 @@ namespace XIVFakeNews
 
             CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "/fakenews"
+                HelpMessage = "/fakenews 打开假消息主页面"
             });
 
             PluginInterface.UiBuilder.Draw += DrawUI;
