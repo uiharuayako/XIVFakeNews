@@ -10,10 +10,10 @@ namespace XIVFakeNews
     {
         public int Version { get; set; } = 0;
 
-        public XivChatType CurrentType { get; set; } = XivChatType.Party;
-        public string Name { get; set; } = "愚人节";
-
-        public string Message { get; set; } = "快乐！";
+        public XivChatType CurrentType = XivChatType.Party;
+        public string Name = "愚人节";
+        public string Server = "";
+        public string Message = "快乐！";
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]
@@ -21,12 +21,12 @@ namespace XIVFakeNews
 
         public void Initialize(DalamudPluginInterface pluginInterface)
         {
-            this.PluginInterface = pluginInterface;
+            PluginInterface = pluginInterface;
         }
 
         public void Save()
         {
-            this.PluginInterface!.SavePluginConfig(this);
+            PluginInterface!.SavePluginConfig(this);
         }
     }
 }
