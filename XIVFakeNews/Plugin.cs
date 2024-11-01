@@ -7,7 +7,10 @@ using Dalamud.Game.Gui;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility;
+using ECommons;
+using ECommons.DalamudServices;
 
 namespace XIVFakeNews
 {
@@ -16,23 +19,23 @@ namespace XIVFakeNews
         public string Name => "FAKE NEWS";
         private const string CommandName = "/fakenews";
 
-        private DalamudPluginInterface PluginInterface { get; init; }
-        private CommandManager CommandManager { get; init; }
+        private IDalamudPluginInterface PluginInterface { get; init; }
+        private ICommandManager CommandManager { get; init; }
         public Configuration Configuration { get; init; }
         public WindowSystem WindowSystem = new("XIVFakeNews");
 
         public MainWindow MainWindow { get; init; }
-        [PluginService][RequiredVersion("1.0")] public static ChatGui ChatGui { get; private set; } = null!;
         public Plugin(
-            [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
-            [RequiredVersion("1.0")] CommandManager commandManager)
+            IDalamudPluginInterface pluginInterface,
+            ICommandManager commandManager)
         {
             PluginInterface = pluginInterface;
             CommandManager = commandManager;
-
+            ECommonsMain.Init(pluginInterface, this);        
+            
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Configuration.Initialize(PluginInterface);
-
+            
             MainWindow = new MainWindow(this);
             WindowSystem.AddWindow(MainWindow);
 
@@ -47,7 +50,7 @@ namespace XIVFakeNews
 
         public static void SendMessage(XivChatType type, string name, string server, string message)
         {
-            var n = server.IsNullOrEmpty() ? new SeString(
+            var n = StringExtensions.IsNullOrEmpty(server) ? new SeString(
                 new TextPayload(name)) :
                 new SeString(
                 new TextPayload(name),
@@ -58,7 +61,7 @@ namespace XIVFakeNews
                 new TextPayload(message)
                 );
 
-            ChatGui.PrintChat(new XivChatEntry()
+            Svc.Chat.Print(new XivChatEntry()
             {
                 Name = n,
                 Message = msg,
@@ -67,6 +70,7 @@ namespace XIVFakeNews
         }
         public void Dispose()
         {
+            ECommonsMain.Dispose();
             WindowSystem.RemoveAllWindows();
             CommandManager.RemoveHandler(CommandName);
         }

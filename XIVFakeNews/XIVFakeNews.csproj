@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Authors></Authors>
-    <Company></Company>
-    <Version>0.0.0.3</Version>
+    <Authors>Uiharu</Authors>
+    <Company>moewcorp</Company>
+    <Version>0.0.0.4</Version>
     <Description>FAKE NEWS！</Description>
-    <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/goatcorp/XIVFakeNews</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -30,7 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DalamudPackager" Version="2.1.11" />
+    <PackageReference Include="DalamudPackager" Version="2.1.13" />
+   <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
     <Reference Include="FFXIVClientStructs">
       <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
       <Private>false</Private>
